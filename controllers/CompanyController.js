@@ -5,6 +5,8 @@ async function findAll(req, res, next) {
         include: [{
             model: models.User,
             as: 'users',
+            attributes: ['id', 'username'],
+            through: { attributes: [] }
         }]
     }).then(companies => {
         res.send(companies)
@@ -59,10 +61,32 @@ async function store(req, res, next) {
     }
 }
 
+async function addUser(req, res, next) {
+
+    let userId = req.params.user_id
+    let companyId = req.params.company_id
+
+    models.Company.findByPk(companyId).then(company => {
+        if(company !== null){
+            models.User.findByPk(userId).then(user => {
+                if(user !== null){
+                    company.addUser(user);
+                    res.send(user.username + ' has been added to company ' + company.name)
+                } else {
+                    res.status(404).send('No user found for id : ' + userId)
+                }
+            })
+        } else {
+            res.status(404).send('No company found for id : ' + companyId)
+        }
+    });
+}
+
 module.exports = {
     findAll : findAll,
     findOne : findOne,
     update : update,
     destroy : destroy,
     store : store,
+    addUser : addUser,
 }

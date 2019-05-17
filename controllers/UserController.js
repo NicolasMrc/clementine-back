@@ -5,6 +5,8 @@ async function findAll(req, res, next) {
         include: [{
             model: models.Company,
             as: 'companies',
+            attributes: ['id', 'name'],
+            through: { attributes: [] }
         }]
     }).then(users => {
         res.send(users)
