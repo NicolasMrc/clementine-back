@@ -1,26 +1,62 @@
+var models  = require('../models');
+
 async function findAll(req, res, next) {
-    res.send('respond with all users');
-    return next()
+    models.User.findAll({
+        include: [{
+            model: models.Company,
+            as: 'companies',
+        }]
+    }).then(users => {
+        res.send(users)
+    });
 }
 
 async function findOne(req, res, next) {
-    res.send('respond with a user');
-    return next()
+    models.User.findByPk(req.params.id)
+        .then(user => {
+            if(user !== null){
+                res.send(user)
+            } else {
+                res.status(404).send('No user found for id : ' + id)
+            }
+        });
 }
 
 async function update(req, res, next) {
-    res.send('update a user');
-    return next()
+    let username = req.body.username
+    if(username !== undefined && username.trim() !== ''){
+        models.User.update(
+            {
+                username: username,
+            },
+            {
+                where: {id: req.params.id},
+            }).then(user => {
+            res.status(200).send('updated successfully user with id : ' + req.params.id)
+        });
+    } else {
+        res.status(500).send('No username provided')
+    }
 }
 
 async function destroy(req, res, next) {
-    res.send('delete a user by id');
-    return next()
+    models.User.destroy({ where: {id: req.params.id} })
+        .then( () => {
+            res.status(200).send('deleted successfully user with id : ' + req.params.id);
+        });
 }
 
 async function store(req, res, next) {
-    res.send('save a new user');
-    return next()
+    let username = req.body.username
+    if(username !== undefined && username.trim() !== ''){
+        models.User.create({
+            username: username,
+        }).then(user => {
+            res.send(user);
+        });
+    } else {
+        res.status(500).send('No username provided')
+    }
 }
 
 module.exports = {
