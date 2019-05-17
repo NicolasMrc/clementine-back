@@ -1,5 +1,12 @@
 var models  = require('../models');
 
+/**
+ * find all user
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<void>}
+ */
 async function findAll(req, res, next) {
     models.User.findAll({
         include: [{
@@ -13,6 +20,13 @@ async function findAll(req, res, next) {
     });
 }
 
+/**
+ * find one user by id
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<void>}
+ */
 async function findOne(req, res, next) {
     models.User.findByPk(req.params.id)
         .then(user => {
@@ -24,6 +38,13 @@ async function findOne(req, res, next) {
         });
 }
 
+/**
+ * update one user by id
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<void>}
+ */
 async function update(req, res, next) {
     let username = req.body.username
     if(username !== undefined && username.trim() !== ''){
@@ -41,6 +62,13 @@ async function update(req, res, next) {
     }
 }
 
+/**
+ * delete a user by id
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<void>}
+ */
 async function destroy(req, res, next) {
     models.User.destroy({ where: {id: req.params.id} })
         .then( () => {
@@ -48,6 +76,13 @@ async function destroy(req, res, next) {
         });
 }
 
+/**
+ * store a new user
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<void>}
+ */
 async function store(req, res, next) {
     let username = req.body.username
     if(username !== undefined && username.trim() !== ''){

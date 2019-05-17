@@ -1,5 +1,12 @@
 var models  = require('../models');
 
+/**
+ * Find all companies
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<void>}
+ */
 async function findAll(req, res, next) {
     models.Company.findAll({
         include: [{
@@ -13,6 +20,13 @@ async function findAll(req, res, next) {
     });
 }
 
+/**
+ * find One Company by id
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<void>}
+ */
 async function findOne(req, res, next) {
     models.Company.findByPk(req.params.id)
         .then(company => {
@@ -24,6 +38,13 @@ async function findOne(req, res, next) {
         });
 }
 
+/**
+ * update an existing company
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<void>}
+ */
 async function update(req, res, next) {
     let name = req.body.name
     if(name !== undefined && name.trim() !== ''){
@@ -41,6 +62,13 @@ async function update(req, res, next) {
     }
 }
 
+/**
+ * delete an existing company
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<void>}
+ */
 async function destroy(req, res, next) {
     models.Company.destroy({ where: {id: req.params.id} })
         .then( () => {
@@ -48,6 +76,13 @@ async function destroy(req, res, next) {
         });
 }
 
+/**
+ * store a new company
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<void>}
+ */
 async function store(req, res, next) {
     let name = req.body.name
     if(name !== undefined && name.trim() !== ''){
@@ -61,6 +96,13 @@ async function store(req, res, next) {
     }
 }
 
+/**
+ * Add an existing user to an existing company
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<void>}
+ */
 async function addUser(req, res, next) {
 
     let userId = req.params.user_id
