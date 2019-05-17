@@ -33,4 +33,5 @@ $ node_modules/.bin/sequelize db:seed:all
 * `UPDATE : /companies/:id` -> update company with id  `:id`
 * `DELETE : /companies/:id` -> delete company with id  `:id`
 * `POST : /companies/:company_id/users/:user_id` -> add user with id `:user_id` to company with id `:company_id`
+* `DELETE : /companies/:company_id/users/:user_id` -> remove user with id `:user_id` from company with id `:company_id`
 
