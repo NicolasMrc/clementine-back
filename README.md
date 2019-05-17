@@ -17,7 +17,7 @@ $ node_modules/.bin/sequelize db:seed:all
 
 ## Availables routes
 
-####Users
+### Users
 
 * `GET : /users/` -> return all users
 * `GET : /users/:id` -> return user with id  `:id`
@@ -25,7 +25,7 @@ $ node_modules/.bin/sequelize db:seed:all
 * `UPDATE : /users/:id` -> update user with id  `:id`
 * `DELETE : /users/:id` -> delete user with id  `:id`
 
-####Companies
+### Companies
 
 * `GET : /companies/` -> return all companies
 * `GET : /companies/:id` -> return company with id  `:id`
