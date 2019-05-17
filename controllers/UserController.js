@@ -28,8 +28,14 @@ async function findAll(req, res, next) {
  * @returns {Promise<void>}
  */
 async function findOne(req, res, next) {
-    models.User.findByPk(req.params.id)
-        .then(user => {
+    models.User.findByPk(req.params.id, {
+        include: [{
+            model: models.Company,
+            as: 'companies',
+            attributes: ['id', 'name'],
+            through: { attributes: [] }
+        }]
+    }).then(user => {
             if(user !== null){
                 res.send(user)
             } else {

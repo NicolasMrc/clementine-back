@@ -28,8 +28,14 @@ async function findAll(req, res, next) {
  * @returns {Promise<void>}
  */
 async function findOne(req, res, next) {
-    models.Company.findByPk(req.params.id)
-        .then(company => {
+    models.Company.findByPk(req.params.id, {
+        include: [{
+            model: models.User,
+            as: 'users',
+            attributes: ['id', 'username'],
+            through: { attributes: [] }
+        }]
+    }).then(company => {
             if(company !== null){
                 res.send(company)
             } else {
@@ -124,6 +130,34 @@ async function addUser(req, res, next) {
     });
 }
 
+/**
+ * remove an existing user from an existing company
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<void>}
+ */
+async function removeUser(req, res, next) {
+
+    let userId = req.params.user_id
+    let companyId = req.params.company_id
+
+    models.Company.findByPk(companyId).then(company => {
+        if(company !== null){
+            models.User.findByPk(userId).then(user => {
+                if(user !== null){
+                    company.removeUser(user);
+                    res.send(user.username + ' has been removed from company ' + company.name)
+                } else {
+                    res.status(404).send('No user found for id : ' + userId)
+                }
+            })
+        } else {
+            res.status(404).send('No company found for id : ' + companyId)
+        }
+    });
+}
+
 module.exports = {
     findAll : findAll,
     findOne : findOne,
@@ -131,4 +165,5 @@ module.exports = {
     destroy : destroy,
     store : store,
     addUser : addUser,
+    removeUser : removeUser,
 }
